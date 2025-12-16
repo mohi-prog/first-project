@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "337664720837",
+    "project_id": "learnconnectmyself",
+    "storage_bucket": "learnconnectmyself.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337664720837:android:75dbfccd07c256fdf315ac",
+        "android_client_info": {
+          "package_name": "com.example.learnconnectmyself"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1QpT7AQye9MgJDbMPzGkpCdCNK19pC2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
