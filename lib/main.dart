@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
 import 'test.dart';
 import 'changeColor.dart';
+import 'Taschenrechner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'calc': (context) => MiniCalc(),
         'changeColor': (context) => changeColor(),
+        'taschenrechner': (context) => Calculator(),
       },
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -220,6 +222,15 @@ class _scrollState extends State<scroll> {
               onPressed: () {
                 Navigator.pushNamed(context, 'changeColor');
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'taschenrechner');
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.blue),
+              ),
+              child: Text('Taschenrechner'),
             ),
           ],
         ),
