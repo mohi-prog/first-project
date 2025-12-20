@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Calculator extends StatelessWidget {
-  const Calculator({super.key});
+class CAlculator extends StatefulWidget {
+  const CAlculator({super.key});
 
+  @override
+  State<CAlculator> createState() => _CAlculatorState();
+}
+
+class _CAlculatorState extends State<CAlculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +50,7 @@ class Textfields extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 260,
+          top: 330,
           left: 30,
           right: 150,
           bottom: 110,
@@ -65,7 +70,7 @@ class Textfields extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 200,
+          top: 230,
           left: 270,
 
           width: 100,

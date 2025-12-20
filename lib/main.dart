@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'calc': (context) => MiniCalc(),
         'changeColor': (context) => changeColor(),
-        'taschenrechner': (context) => Calculator(),
+        'taschenrechner': (context) => CAlculator(),
       },
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
