@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'test.dart';
 import 'changeColor.dart';
 import 'Taschenrechner.dart';
+import 'loginScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         'calc': (context) => MiniCalc(),
         'changeColor': (context) => changeColor(),
         'taschenrechner': (context) => CAlculator(),
+        'Login': (context) => Login(),
       },
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -231,6 +233,12 @@ class _scrollState extends State<scroll> {
                 backgroundColor: WidgetStateProperty.all(Colors.blue),
               ),
               child: Text('Taschenrechner'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'Login');
+              },
+              child: Text('Login'),
             ),
           ],
         ),
