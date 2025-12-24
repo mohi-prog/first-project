@@ -1,6 +1,6 @@
 name: learnconnectmyself
 description: "A new Flutter project."
-publish_to: 'none' # Private Package
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -31,3 +31,6 @@ flutter:
     - family: Jersey
       fonts:
         - asset: assets/fonts/Jersey_10/Jersey10-Regular.ttf
+
+  assets:
+    - assets/images/Logo.png

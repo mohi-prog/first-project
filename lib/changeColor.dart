@@ -13,6 +13,11 @@ class _changeColorState extends State<changeColor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Change Button Color'),
+        backgroundColor: Colors.blue,
+        leading: BackButton(),
+      ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -30,6 +35,7 @@ class _changeColorState extends State<changeColor> {
             });
           },
           child: Text('Change Color'),
+
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(buttonColor),
           ),
