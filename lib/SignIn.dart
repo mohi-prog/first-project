@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
-import 'changeColor.dart';
-import 'SignIn.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 254, 255, 252),
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 205, 51, 51),
+        leading: BackButton(),
         flexibleSpace: Stack(
           children: [
             Positioned(
               top: 50,
-              right: 18,
-              width: 70,
-
+              right: 25,
               child: Text(
-                'Login',
+                'Sign In',
                 style: TextStyle(
                   color: const Color.fromARGB(255, 0, 0, 0),
                   fontSize: 35,
@@ -29,168 +32,173 @@ class Login extends StatelessWidget {
           ],
         ),
       ),
-      body: LoginBody(),
-      backgroundColor: const Color.fromARGB(255, 254, 255, 252),
+      body: SignInn(),
     );
   }
 }
 
-class LoginBody extends StatefulWidget {
-  const LoginBody({super.key});
+class SignInn extends StatefulWidget {
+  const SignInn({super.key});
 
   @override
-  State<LoginBody> createState() => _LoginBodyState();
+  State<SignInn> createState() => _SignInnState();
 }
 
-class _LoginBodyState extends State<LoginBody> {
+class _SignInnState extends State<SignInn> {
   bool isChecked = false;
-  final UsernameController = TextEditingController();
-  final EmailController = TextEditingController();
-  final PasswordController = TextEditingController();
-
-  void HandleLogin() {
-    if (UsernameController.text.isEmpty ||
-        EmailController.text.isEmpty ||
-        PasswordController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Please fill in all fields')));
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => changeColor()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned(
-          top: 15,
+          top: -17,
           left: 90,
           width: 200,
           height: 200,
           child: Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
         ),
         Positioned(
-          top: 210,
-          left: 165,
+          top: 150,
+          left: 113,
           child: Text(
-            'Hello!',
+            'Hey this is LNCT!',
             style: TextStyle(
               fontSize: 30,
               fontFamily: 'Jersey',
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
+              color: Colors.red,
             ),
           ),
         ),
         Positioned(
-          top: 290,
-          left: 35,
+          top: 235,
+          left: 30,
           width: 320,
+          height: 200,
           child: TextField(
-            controller: UsernameController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
+                borderSide: BorderSide(color: Colors.red, width: 3),
               ),
               hintText: 'Username',
-              icon: Icon(Icons.person, color: Colors.blue),
+              hintStyle: TextStyle(color: Colors.red),
+              icon: Icon(Icons.person, color: Colors.red),
             ),
           ),
         ),
         Positioned(
-          top: 360,
-          left: 35,
+          top: 310,
+          left: 30,
           width: 320,
+          height: 200,
+
           child: TextField(
-            controller: EmailController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
+                borderSide: BorderSide(color: Colors.red, width: 3),
               ),
               hintText: 'Email',
-              icon: Icon(Icons.email, color: Colors.blue),
+              hintStyle: TextStyle(color: Colors.red),
+              icon: Icon(Icons.email, color: Colors.red),
             ),
           ),
         ),
         Positioned(
-          top: 430,
-          left: 35,
+          top: 385,
+          left: 30,
           width: 320,
+          height: 200,
+
           child: TextField(
-            controller: PasswordController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.blue, width: 3),
+                borderSide: BorderSide(color: Colors.red, width: 3),
               ),
               hintText: 'Password',
-              icon: Icon(Icons.lock, color: Colors.blue),
+              hintStyle: TextStyle(color: Colors.red),
+              icon: Icon(Icons.lock, color: Colors.red),
             ),
           ),
         ),
-
         Positioned(
-          top: 530,
-          left: 35,
+          top: 460,
+          left: 30,
           width: 320,
-          height: 60,
+          height: 200,
 
+          child: TextField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.red, width: 3),
+              ),
+              hintText: 'Confirm Password',
+              hintStyle: TextStyle(color: Colors.red),
+              icon: Icon(Icons.lock, color: Colors.red),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 535,
+          left: 40,
+          width: 320,
+          height: 50,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.red,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            onPressed: () {
-              HandleLogin();
-            },
+            onPressed: () {},
             child: Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 30,
-                fontFamily: 'Jersey',
-                color: Colors.black,
-              ),
+              'Sign In',
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
         ),
         Positioned(
-          top: 602,
-          left: 125,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignIn()),
-              );
-            },
-            child: Text(
-              'No account yet? Sign up',
+          top: 605,
+          left: 130,
+          child: RichText(
+            text: TextSpan(
+              text: 'I agree to the ',
               style: TextStyle(
-                color: Colors.blue,
+                color: Colors.red,
                 fontSize: 16,
                 fontFamily: 'Jersey',
               ),
+              children: [
+                TextSpan(
+                  text: 'Terms and Conditions',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 16,
+                    fontFamily: 'Jersey',
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: 588,
+          left: 85,
+          width: 50,
+          height: 50,
+          child: Transform.scale(
+            scale: 0.8,
+            child: Checkbox(
+              value: isChecked,
+              onChanged: (value) {
+                setState(() {
+                  isChecked = value!;
+                });
+              },
             ),
           ),
         ),
@@ -210,7 +218,7 @@ class _LoginBodyState extends State<LoginBody> {
           child: Text(
             'or',
             style: TextStyle(
-              color: Colors.blue,
+              color: Colors.red,
               fontSize: 16,
               fontFamily: 'Jersey',
             ),
