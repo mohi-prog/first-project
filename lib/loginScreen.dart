@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'changeColor.dart';
+import 'package:learnconnectmyself/notes_screen.dart';
 import 'SignIn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'google_auth_service.dart' show GoogleAuthService;
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -13,10 +15,9 @@ class Login extends StatelessWidget {
         flexibleSpace: Stack(
           children: [
             Positioned(
-              top: 50,
+              top: 35,
               right: 18,
               width: 70,
-
               child: Text(
                 'Login',
                 style: TextStyle(
@@ -29,7 +30,7 @@ class Login extends StatelessWidget {
           ],
         ),
       ),
-      body: LoginBody(),
+      body: const LoginBody(),
       backgroundColor: const Color.fromARGB(255, 254, 255, 252),
     );
   }
@@ -43,23 +44,54 @@ class LoginBody extends StatefulWidget {
 }
 
 class _LoginBodyState extends State<LoginBody> {
-  bool isChecked = false;
+  bool obscurePassword = true;
   final UsernameController = TextEditingController();
   final EmailController = TextEditingController();
   final PasswordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void HandleLogin() {
+  void handleEmailLogin() async {
     if (UsernameController.text.isEmpty ||
         EmailController.text.isEmpty ||
         PasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: EmailController.text.trim(),
+        password: PasswordController.text.trim(),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const NotesScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      switch (e.code) {
+        case 'user-not-found':
+          message = 'User not found';
+          break;
+        case 'wrong-password':
+          message = 'Incorrect password';
+          break;
+        case 'invalid-email':
+          message = 'Invalid email';
+          break;
+        default:
+          message = 'Login failed';
+      }
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Please fill in all fields')));
-    } else {
-      Navigator.push(
+      ).showSnackBar(SnackBar(content: Text(message)));
+    } catch (e) {
+      ScaffoldMessenger.of(
         context,
-        MaterialPageRoute(builder: (context) => changeColor()),
-      );
+      ).showSnackBar(const SnackBar(content: Text('Something went wrong')));
     }
   }
 
@@ -133,6 +165,7 @@ class _LoginBodyState extends State<LoginBody> {
           width: 320,
           child: TextField(
             controller: PasswordController,
+            obscureText: obscurePassword,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -144,16 +177,25 @@ class _LoginBodyState extends State<LoginBody> {
               ),
               hintText: 'Password',
               icon: Icon(Icons.lock, color: Colors.blue),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  obscurePassword ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscurePassword = !obscurePassword;
+                  });
+                },
+              ),
             ),
           ),
         ),
-
         Positioned(
           top: 530,
           left: 35,
           width: 320,
           height: 60,
-
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
@@ -161,9 +203,7 @@ class _LoginBodyState extends State<LoginBody> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            onPressed: () {
-              HandleLogin();
-            },
+            onPressed: handleEmailLogin,
             child: Text(
               'Login',
               style: TextStyle(
@@ -181,7 +221,7 @@ class _LoginBodyState extends State<LoginBody> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignIn()),
+                MaterialPageRoute(builder: (context) => const SignIn()),
               );
             },
             child: Text(
@@ -194,6 +234,7 @@ class _LoginBodyState extends State<LoginBody> {
             ),
           ),
         ),
+        // Divider und OR
         Positioned(
           top: 646,
           left: 25,
@@ -216,14 +257,26 @@ class _LoginBodyState extends State<LoginBody> {
             ),
           ),
         ),
+        // Google Login Button
         Positioned(
           top: 660,
           left: 140,
           width: 40,
           height: 40,
-
           child: InkWell(
-            onTap: () {},
+            onTap: () async {
+              final user = await GoogleAuthService.handleGoogleSignIn();
+              if (user != null) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotesScreen()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Google login failed')),
+                );
+              }
+            },
 
             child: Image.asset('assets/images/google1.png'),
           ),
@@ -233,10 +286,8 @@ class _LoginBodyState extends State<LoginBody> {
           left: 210,
           width: 60,
           height: 60,
-
           child: InkWell(
             onTap: () {},
-
             child: Image.asset('assets/images/facebook.png'),
           ),
         ),

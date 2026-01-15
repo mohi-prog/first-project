@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'loginScreen.dart';
+import 'google_auth_service.dart';
+import 'changeColor.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -18,7 +22,7 @@ class _SignInState extends State<SignIn> {
         flexibleSpace: Stack(
           children: [
             Positioned(
-              top: 50,
+              top: 35,
               right: 25,
               child: Text(
                 'Sign In',
@@ -32,7 +36,7 @@ class _SignInState extends State<SignIn> {
           ],
         ),
       ),
-      body: SignInn(),
+      body: const SignInn(),
     );
   }
 }
@@ -46,6 +50,74 @@ class SignInn extends StatefulWidget {
 
 class _SignInnState extends State<SignInn> {
   bool isChecked = false;
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+  final TextEditingController UsernameController = TextEditingController();
+  final TextEditingController EmailController = TextEditingController();
+  final TextEditingController PasswordController = TextEditingController();
+  final TextEditingController ConfirmPasswordController =
+      TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void HandleSignIn() async {
+    if (EmailController.text.isEmpty ||
+        PasswordController.text.isEmpty ||
+        ConfirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all required fields')),
+      );
+      return;
+    }
+
+    if (PasswordController.text != ConfirmPasswordController.text) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      return;
+    }
+
+    try {
+      // Firebase Registrierung
+      await _auth.createUserWithEmailAndPassword(
+        email: EmailController.text.trim(),
+        password: PasswordController.text.trim(),
+      );
+
+      // Erfolgreiche Registrierung → Weiterleitung zum Login
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account created successfully!')),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      switch (e.code) {
+        case 'email-already-in-use':
+          message = 'Email already in use';
+          break;
+        case 'invalid-email':
+          message = 'Invalid email';
+          break;
+        case 'weak-password':
+          message = 'Password is too weak';
+          break;
+        default:
+          message = 'Sign up failed';
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Something went wrong')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -69,12 +141,14 @@ class _SignInnState extends State<SignInn> {
             ),
           ),
         ),
+        // Username TextField
         Positioned(
           top: 235,
           left: 30,
           width: 320,
           height: 200,
           child: TextField(
+            controller: UsernameController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -86,13 +160,14 @@ class _SignInnState extends State<SignInn> {
             ),
           ),
         ),
+        // Email
         Positioned(
           top: 310,
           left: 30,
           width: 320,
           height: 200,
-
           child: TextField(
+            controller: EmailController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -104,13 +179,15 @@ class _SignInnState extends State<SignInn> {
             ),
           ),
         ),
+        // Password
         Positioned(
           top: 385,
           left: 30,
           width: 320,
           height: 200,
-
           child: TextField(
+            controller: PasswordController,
+            obscureText: obscurePassword,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -119,16 +196,29 @@ class _SignInnState extends State<SignInn> {
               hintText: 'Password',
               hintStyle: TextStyle(color: Colors.red),
               icon: Icon(Icons.lock, color: Colors.red),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  obscurePassword ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscurePassword = !obscurePassword;
+                  });
+                },
+              ),
             ),
           ),
         ),
+        // Confirm Password
         Positioned(
           top: 460,
           left: 30,
           width: 320,
           height: 200,
-
           child: TextField(
+            controller: ConfirmPasswordController,
+            obscureText: obscureConfirmPassword,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -137,9 +227,25 @@ class _SignInnState extends State<SignInn> {
               hintText: 'Confirm Password',
               hintStyle: TextStyle(color: Colors.red),
               icon: Icon(Icons.lock, color: Colors.red),
+
+              suffixIcon: IconButton(
+                icon: Icon(
+                  obscureConfirmPassword
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscureConfirmPassword = !obscureConfirmPassword;
+                  });
+                },
+              ),
             ),
           ),
         ),
+
+        // Sign In Button
         Positioned(
           top: 535,
           left: 40,
@@ -152,13 +258,14 @@ class _SignInnState extends State<SignInn> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            onPressed: () {},
+            onPressed: HandleSignIn,
             child: Text(
               'Sign In',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
         ),
+        // Rest der UI unverändert
         Positioned(
           top: 605,
           left: 130,
@@ -229,10 +336,20 @@ class _SignInnState extends State<SignInn> {
           left: 140,
           width: 40,
           height: 40,
-
           child: InkWell(
-            onTap: () {},
-
+            onTap: () async {
+              final user = await GoogleAuthService.handleGoogleSignIn();
+              if (user != null) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => changeColor()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Google login failed')),
+                );
+              }
+            },
             child: Image.asset('assets/images/google1.png'),
           ),
         ),
@@ -241,10 +358,8 @@ class _SignInnState extends State<SignInn> {
           left: 210,
           width: 60,
           height: 60,
-
           child: InkWell(
             onTap: () {},
-
             child: Image.asset('assets/images/facebook.png'),
           ),
         ),
