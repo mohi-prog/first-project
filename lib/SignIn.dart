@@ -363,6 +363,17 @@ class _SignInnState extends State<SignInn> {
             child: Image.asset('assets/images/facebook.png'),
           ),
         ),
+        Positioned(
+          top: 30,
+          left: 150,
+          width: 50,
+          height: 50,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            onPressed: () {},
+            child: Icon(Icons.laptop),
+          ),
+        ),
       ],
     );
   }

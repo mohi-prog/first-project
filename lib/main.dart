@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
 import 'test.dart';
 import 'changeColor.dart';
 import 'Taschenrechner.dart';
 import 'loginScreen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'ai_test_page.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // dotenv LADEN!
+  await dotenv.load(fileName: ".env"); // ← WICHTIG!
+
+  // Firebase initialisieren
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(ProviderScope(child: MyApp()));
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -239,6 +246,22 @@ class _scrollState extends State<scroll> {
                 Navigator.pushNamed(context, 'Login');
               },
               child: Text('Login'),
+            ),
+            Positioned(
+              top: 30,
+              left: 150,
+              width: 50,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AiTest()),
+                  );
+                },
+                child: Icon(Icons.laptop),
+              ),
             ),
           ],
         ),

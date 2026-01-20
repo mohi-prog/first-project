@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:learnconnectmyself/main.dart';
 import 'firestore_service.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -51,6 +50,7 @@ class _MainNotesScreenState extends State<MainNotesScreen> {
   final FirestoreService _firestoreService = FirestoreService();
   final TextEditingController _noteTitleController = TextEditingController();
   final TextEditingController _noteContentController = TextEditingController();
+
   String previewText(String text, {int maxWords = 15}) {
     final words = text.split(RegExp(r'\s+'));
     if (words.length <= maxWords) return text;
@@ -177,7 +177,7 @@ class _MainNotesScreenState extends State<MainNotesScreen> {
                           TextField(
                             controller: _noteContentController,
                             maxLines: 5,
-                            
+
                             maxLength: 20,
                             decoration: InputDecoration(
                               hintText: 'Content',
