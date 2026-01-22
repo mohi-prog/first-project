@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:learnconnectmyself/summarizer.dart';
 import 'firebase_options.dart';
 import 'test.dart';
 import 'changeColor.dart';
@@ -261,6 +262,21 @@ class _scrollState extends State<scroll> {
                   );
                 },
                 child: Icon(Icons.laptop),
+              ),
+            ),
+            Positioned(
+              top: 50,
+              left: 150,
+              width: 50,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Summarizer()),
+                  );
+                },
+                child: Icon(Icons.summarize),
               ),
             ),
           ],

@@ -24,4 +24,15 @@ class AiService {
       throw Exception('Failed to get AI response: $e');
     }
   }
+
+  Future<String> summarizeText(String text) async {
+    final prompt =
+        '''
+Fasse den folgenden Text kurz, einfach und max. 50 Wörtern zusammen, also deine Antwort soll maximal 50 Wörtern zusammengefasst sein und dann punkt:
+
+$text
+''';
+
+    return await sendMessage(prompt);
+  }
 }
