@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:learnconnectmyself/Summarize_Text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'ai_service.dart';
+import 'summary_item.dart';
+import 'history_screen.dart';
 
 class Summarizer extends StatefulWidget {
   const Summarizer({super.key});
@@ -21,14 +25,14 @@ class _SummarizerState extends State<Summarizer> {
           children: [
             Positioned(
               top: 0,
-              left: 270,
+              left: 220,
               width: 130,
               height: 130,
               child: Image.asset('assets/images/Logo.png'),
             ),
             const Positioned(
-              top: 45,
-              left: 80,
+              top: 35,
+              left: 60,
               child: Text(
                 'Summarizer',
                 style: TextStyle(
@@ -40,6 +44,18 @@ class _SummarizerState extends State<Summarizer> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history, color: Colors.blue, size: 50),
+            padding: EdgeInsets.only(right: 10),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HistoryPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: const Summarize(),
     );
@@ -57,6 +73,17 @@ class _SummarizeState extends State<Summarize> {
   final _controller = TextEditingController();
   final AiService _aiService = AiService();
   bool isLoading = false;
+  Future<void> _saveToHistory(String summary) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final List<String> history = prefs.getStringList('history') ?? [];
+
+    final item = SummaryItem(text: summary, date: DateTime.now());
+
+    history.insert(0, jsonEncode(item.toJson())); // neueste oben
+
+    await prefs.setStringList('history', history);
+  }
 
   @override
   void dispose() {
@@ -171,6 +198,7 @@ class _SummarizeState extends State<Summarize> {
                       final result = await _aiService.summarizeText(
                         _controller.text,
                       );
+                      await _saveToHistory(result);
 
                       setState(() => isLoading = false);
 
