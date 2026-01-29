@@ -28,7 +28,7 @@ class AiService {
   Future<String> summarizeText(String text) async {
     final prompt =
         '''
-Fasse den folgenden Text kurz, einfach und max. 50 Wörtern zusammen, also deine Antwort soll maximal 50 Wörtern zusammengefasst sein und dann punkt und mach es in einer einfachen Sprache so b1-b2 niveau:
+Fasse den folgenden Text kurz, einfach und max. 50 Wörtern zusammen, also deine Antwort soll sehr gut zusammengefasst sein und mach die Länge, wenn der Nutzer etwas dazu sagt, passend zu seiner Anforderung, wenn nichts gesagt wird fasse es so zusammen, wie es zu diesem Text/Textart passt und dann punkt und mach es in einer einfachen Sprache so b1-b2 niveau:
 
 $text
 ''';

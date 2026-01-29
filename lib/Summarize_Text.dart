@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SummarizeText extends StatelessWidget {
   final String resultText;
@@ -19,6 +20,15 @@ class SummarizeText extends StatelessWidget {
             color: Colors.blue,
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        onPressed: () {
+          if (resultText.trim().isNotEmpty) {
+            Share.share(resultText, subject: 'Meine Zusammenfassung');
+          }
+        },
+        child: const Icon(Icons.share, color: Colors.amber),
       ),
     );
   }

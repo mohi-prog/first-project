@@ -78,7 +78,11 @@ class _SummarizeState extends State<Summarize> {
 
     final List<String> history = prefs.getStringList('history') ?? [];
 
-    final item = SummaryItem(text: summary, date: DateTime.now());
+    final item = SummaryItem(
+      inputText: _controller.text,
+      summaryText: summary,
+      date: DateTime.now(),
+    );
 
     history.insert(0, jsonEncode(item.toJson())); // neueste oben
 
@@ -105,8 +109,10 @@ class _SummarizeState extends State<Summarize> {
                 maxLines: null,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
+
                 decoration: InputDecoration(
                   hintText: 'Text eingeben...',
+
                   filled: true,
                   fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
@@ -123,8 +129,31 @@ class _SummarizeState extends State<Summarize> {
             ),
           ),
 
-          const SizedBox(height: 40),
+          /*suffixIcon: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: IconButton(
+                      icon: Icon(Icons.delete_forever, color: Colors.blue, size: 40),
+                      onPressed: () {
+                        _controller.clear();
+                      },),),*/
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, right: 350),
 
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    color: Colors.blue,
+                    size: 40,
+                  ),
+                  onPressed: () => _controller.clear(),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 50),
           SizedBox(
             height: 120,
             width: 120,
@@ -153,7 +182,7 @@ class _SummarizeState extends State<Summarize> {
                               ),
                             ),
                             content: const Text(
-                              'Bitte geben Sie einen Text ein oder einen Text mit mindestens 5 Wörtern ein.',
+                              'Bitte geben Sie einen Text ein oder einen Text mit mindestens einem Wort ein.',
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Jersey',

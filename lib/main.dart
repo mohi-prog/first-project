@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:learnconnectmyself/notes_screen.dart';
 import 'package:learnconnectmyself/summarizer.dart';
 import 'firebase_options.dart';
 import 'test.dart';
@@ -278,6 +279,15 @@ class _scrollState extends State<scroll> {
                 },
                 child: Icon(Icons.summarize),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotesScreen()),
+                );
+              },
+              child: Icon(Icons.notes),
             ),
           ],
         ),
